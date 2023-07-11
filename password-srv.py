@@ -1,6 +1,8 @@
 # Microservice that takes commands/inputs from password-srv.txt
 import time
 import json
+import string
+import random
 
 PASSWORD_PATH = "/Users/ryanmaki/Documents/UO/CS361/CS-361-Project/password-srv.txt"
 RESULT_PATH = "/Users/ryanmaki/Documents/UO/CS361/CS-361-Project/result.txt"
@@ -27,7 +29,10 @@ def runSRV():
 
             line = line.replace("compromised-password-check ", "")
 
-            if password_check(SORTED_COMPROMISED_PWORDS, line) == True:
+            # Pass password to compromised check
+            compromised_check = password_check(SORTED_COMPROMISED_PWORDS, line)
+            
+            if compromised_check == True:
                 result = "The entered password is compromised! Change your password immediately!"
             else:
                 result = "Password is safe."
@@ -42,7 +47,10 @@ def runSRV():
         elif line.startswith("common-password-check"):
             line = line.replace("common-password-check ", "")
             
-            if password_check(SORTED_COMMON_PWORDS, line) == True:
+            # Pass password to common check
+            common_check = password_check(SORTED_COMMON_PWORDS, line)
+            
+            if common_check:
                 result = "The entered password is commonly used! Please choose a stronger password."
             else:
                 result = "Password is safe."
@@ -57,6 +65,7 @@ def runSRV():
         elif line.startswith("combined-check"):
             line = line.replace("combined-check ", "")
 
+            # Pass password to both password checks
             compromised_check = password_check(SORTED_COMPROMISED_PWORDS, line)
             common_check = password_check(SORTED_COMMON_PWORDS, line)
 
@@ -76,9 +85,25 @@ def runSRV():
         
         # Password Recommendation
         elif line.startswith("password-recommendation"):
-            password_len = line.replace("password-recommendation ", "")
-
-            result = password_recommendation(password_len)
+            password_len_str = line.replace("password-recommendation ", "")
+            # Casting the string from input to be an integer
+            password_len = int(password_len_str)
+            result = ""
+            
+            unsafe = True
+            while unsafe:
+                # Create password
+                result = password_recommendation(password_len)
+                
+                # Pass to both password checks
+                compromised_check = password_check(SORTED_COMPROMISED_PWORDS, result)
+                common_check = password_check(SORTED_COMMON_PWORDS, result)
+                
+                if compromised_check or common_check:
+                    continue
+                else:
+                    unsafe = False
+                
 
             # Clear contents of both pword_file and write to result_file
             pword_file = open(PASSWORD_PATH, "w")
@@ -93,6 +118,7 @@ def runSRV():
         result_file.close()
 
 
+## ---------- Code for password checks ------------
 def binary_search(arr, target):
     left = 0
     right = len(arr) - 1
@@ -121,9 +147,14 @@ def password_check(password_file, password):
     else:
         return False
 
-def password_recommendation(password_len):
-    # Returns a random, strong passworth of length password_len
-    return "HI"
+
+## ---------- Code for password recommendation ------------
+def password_recommendation(password_length):
+    char_options = string.ascii_letters + string.digits
+    password = ""
+    for char in range(password_length):
+        password += random.choice(char_options)
+    return password
     
 
 if __name__ == "__main__":
