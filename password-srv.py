@@ -2,11 +2,11 @@
 import time
 import json
 
-PASSWORD_PATH = "/Users/ryanmaki/Documents/UO/CS361/Project/password-srv.txt"
-RESULT_PATH = "/Users/ryanmaki/Documents/UO/CS361/Project/result.txt"
+PASSWORD_PATH = "/Users/ryanmaki/Documents/UO/CS361/CS-361-Project/password-srv.txt"
+RESULT_PATH = "/Users/ryanmaki/Documents/UO/CS361/CS-361-Project/result.txt"
 
-SORTED_COMPROMISED_PWORDS = "/Users/ryanmaki/Documents/UO/CS361/Project/sorted_compromised_passwords.json"
-SORTED_COMMON_PWORDS = "/Users/ryanmaki/Documents/UO/CS361/Project/sorted_common_passwords.json"
+SORTED_COMPROMISED_PWORDS = "/Users/ryanmaki/Documents/UO/CS361/CS-361-Project/sorted_compromised_passwords.json"
+SORTED_COMMON_PWORDS = "/Users/ryanmaki/Documents/UO/CS361/CS-361-Project/sorted_common_passwords.json"
 
 def runSRV():
     while True:
