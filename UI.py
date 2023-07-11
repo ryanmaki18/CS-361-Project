@@ -1,12 +1,16 @@
 # A user interface (UI) that prompts user for their choice of service to run
 import time
 import cv2
+from pydub import AudioSegment
+from pydub.playback import play as play_audio
 
 PASSWORD_PATH = "/Users/ryanmaki/Documents/UO/CS361/CS-361-Project/password-srv.txt"
 RESULT_PATH = "/Users/ryanmaki/Documents/UO/CS361/CS-361-Project/result.txt"
 
-CHECKER_VIDEO_PATH = "/Users/ryanmaki/Documents/UO/CS361/CS-361-Project/Videos/checker.mp4"
-RECOMMENDATION_VIDEO_PATH = "/Users/ryanmaki/Documents/UO/CS361/CS-361-Project/Videos/recommendation.mp4"
+CHECKER_VIDEO_PATH = "/Users/ryanmaki/Documents/UO/CS361/CS-361-Project/VideoAndAudio/checker.mp4"
+CHECKER_AUDIO_PATH = "/Users/ryanmaki/Documents/UO/CS361/CS-361-Project/VideoAndAudio/checkerAudio.m4a"
+RECOMMENDATION_VIDEO_PATH = "/Users/ryanmaki/Documents/UO/CS361/CS-361-Project/VideoAndAudio/recommendation.mp4"
+RECOMMENDATION_AUDIO_PATH = "/Users/ryanmaki/Documents/UO/CS361/CS-361-Project/VideoAndAudio/recommendationAudio.m4a"
 
 starting_message = """
 Please enter the number or name of the service you'd like to use: 
@@ -22,13 +26,12 @@ Leave Blank to Exit.
 
 """
 
-help_video_input = """
-Please select which video you would like to see:
+help_video_input = """Please select which video you would like to watch:
 1 - password checker explaination video
 2 - password recommendation explaination video
-            
-"""
+Leave Blank to Exit.
 
+"""
 
 def runUI():
     while True:
@@ -151,48 +154,47 @@ def runUI():
                 # Sleep for 2 seconds
                 time.sleep(2)
 
-        elif user_input.startswith("help") or user_input.startswith("5"):
-            # Pulls up video explaination 
+        elif user_input.startswith("help") or user_input.startswith("5"):  ## FIXME:
+            # Pulls up video walkthroughs
             print("Help is on the way!")
             
-            # FIXME: Implement this!
-            # help_video()
-            
-            video_selection_str = input(help_video_input)
-            video_selection = int(video_selection_str)
-            if video_selection == 1
-
-            elif
-            
-            else:
-                print("Unknown video selection, please try again.")
-            
+            while True:
+                video_selection_str = input(help_video_input)
+                if video_selection_str.strip() == '':
+                    break
+                video_selection = int(video_selection_str)
+                if video_selection == 1:
+                    open_video(CHECKER_VIDEO_PATH, CHECKER_AUDIO_PATH)
+                elif video_selection == 2:
+                    open_video(RECOMMENDATION_VIDEO_PATH, RECOMMENDATION_AUDIO_PATH)
+                else:
+                    print("Unknown video selection, please try again.")
             
         else:
             print("Unknown Option")
 
 
 ## ------- Code for help video -------
-def open_video(video):
+def open_video(video, audio):
     print("Pulling up Video......")
     video_capture = cv2.VideoCapture(video)
+    audio_capture = AudioSegment.from_file(audio, format = "m4a")
     
     if video_capture.isOpened() == False:
         print("Error opening video... Please try again.")
         
     while(video_capture.isOpened()):
-        ret, frame = video_capture.read
-        if ret == True:
-            # Then Display the frame
-            cv2.imshow("Frame", frame)
-            
-            # Press q on the keyboard to exit
-            if cv2.waitKey(1) & 0xFF == ord('q'):
-                break
-        
-        # Then break out
-        else:
+        ret, frame = video_capture.read()
+        if not ret:
             break
+        
+        # Then Display the frame
+        cv2.imshow("Help Video", frame)
+        
+        # Press q on the keyboard to exit
+        if cv2.waitKey(1) & 0xFF == ord('q'):
+            break
+        play_audio(audio_capture)
     
     # When video is done, release the video capture opject and close all windows
     video_capture.release()
