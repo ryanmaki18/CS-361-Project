@@ -3,6 +3,7 @@ import time
 import json
 import string
 import random
+import re
 
 PASSWORD_PATH = "/Users/ryanmaki/Documents/UO/CS361/CS-361-Project/password-srv.txt"
 RESULT_PATH = "/Users/ryanmaki/Documents/UO/CS361/CS-361-Project/result.txt"
@@ -82,6 +83,28 @@ def runSRV():
             pword_file = open(PASSWORD_PATH, "w")
             result_file = open(RESULT_PATH, "w")
             result_file.write(result)
+            
+        # Complexity Check 
+        elif line.startswith("complexity-check"):
+            line = line.replace("complexity-check ", "")
+            
+            # Pass password to both checks (length and complexity)
+            min_length = 12
+            length_check = lengthCheck(line, min_length)
+            complexity_check = complexityCheck(line)
+            
+            if not length_check:
+                result = "The entered password did not meet length requirements! Good passwords are at least 12 characters."
+            elif not complexity_check:
+                result = "The entered password is not complex enough."
+            else:
+                result = "Password meets all complexity requirements."
+            
+            # Clear contents of both pword_file and write to result_file
+            pword_file = open(PASSWORD_PATH, "w")
+            result_file = open(RESULT_PATH, "w")
+            result_file.write(result)
+            
         
         # Password Recommendation
         elif line.startswith("password-recommendation"):
@@ -91,16 +114,20 @@ def runSRV():
             result = ""
             
             unsafe = True
-            while unsafe:
+            notComplex = True
+            while unsafe and notComplex:
                 # Create password
                 result = password_recommendation(password_len)
                 
                 # Pass to both password checks
                 compromised_check = password_check(SORTED_COMPROMISED_PWORDS, result)
                 common_check = password_check(SORTED_COMMON_PWORDS, result)
+                # notComplex = complexityCheck(result)
                 
                 if compromised_check or common_check:
                     continue
+                # elif notComplex:
+                #     continue
                 else:
                     unsafe = False
                 
@@ -118,7 +145,7 @@ def runSRV():
         result_file.close()
 
 
-## ---------- Code for password checks ------------
+## ---------- Code for Password Checks ------------
 def binary_search(arr, target):
     left = 0
     right = len(arr) - 1
@@ -146,13 +173,39 @@ def password_check(password_file, password):
         return True
     else:
         return False
-
+    
+    
+## ---------- Code for Complexity Check ------------
+def lengthCheck(password, min_length):
+    if len(password) < min_length:
+        return False
+    return True
+    
+def complexityCheck(password):
+    # Uppercase
+    if not re.search(r'[A-Z]', password):
+        return False
+    
+    # Lowercase
+    if not re.search(r'[a-z]', password):
+        return False
+    
+    # Integers
+    if not re.search(r'\d', password):
+        return False
+    
+    # Special Characters
+    if not re.search(r'[^a-zA-Z0-9]', password):
+        return False
+    
+    return True
+    
 
 ## ---------- Code for password recommendation ------------
 def password_recommendation(password_length):
-    char_options = string.ascii_letters + string.digits
+    char_options = string.ascii_letters + string.digits + string.punctuation
     password = ""
-    for char in range(password_length):
+    for _ in range(password_length):
         password += random.choice(char_options)
     return password
     

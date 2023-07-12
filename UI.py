@@ -1,8 +1,8 @@
 # A user interface (UI) that prompts user for their choice of service to run
 import time
 import cv2
-from pydub import AudioSegment
-from pydub.playback import play as play_audio
+import numpy as np
+from ffpyplayer.player import MediaPlayer
 
 PASSWORD_PATH = "/Users/ryanmaki/Documents/UO/CS361/CS-361-Project/password-srv.txt"
 RESULT_PATH = "/Users/ryanmaki/Documents/UO/CS361/CS-361-Project/result.txt"
@@ -18,10 +18,12 @@ Please enter the number or name of the service you'd like to use:
 2 - common-password-check
 3 - combined-check
     (Checks if compromised or common; Never stores your information)
-4 - password-recommendation
+4 - complexity-check
+    (Checks if password meets complexity requirements)
+5 - password-recommendation
     (Recommends a safe and strong password of any length)
-5 - help 
-    (Pulls up explaination video)
+6 - help 
+    (Pulls up explaination videos)
 Leave Blank to Exit. 
 
 """
@@ -122,25 +124,58 @@ def runUI():
 
                 # Sleep for 2 seconds
                 time.sleep(2)
+                
+        elif user_input.startswith("complexity-check") or user_input.startswith("4"):
+            print("complexity-check.")
+            
+            while True:
+                # Loops until input is left blank
+                password = input("Please enter a password or leave blank to exit\n")
+                if password == '':
+                        break
+                # open password-srv.txt file and write the requested service, along with password
+                pword_file = open(PASSWORD_PATH, "w")
+                pword_file.write("complexity-check " + password)
+                pword_file.close()
+                
+                # Sleep for 2 seconds
+                time.sleep(2)
 
-        elif user_input.startswith("password-recommendation") or user_input.startswith("4"):
+                # Open result.txt, print contents, and then delete contents
+                result_file = open(RESULT_PATH, "r")
+                result = result_file.read()
+                print(result)
+                result_file = open(RESULT_PATH, "w")
+                result_file.close()
+
+                # Sleep for 2 seconds
+                time.sleep(2)
+            
+        elif user_input.startswith("password-recommendation") or user_input.startswith("5"):
             print("password-recommendation selected.")
             
             while True:
                 # Loops until input is left blank
-                password_len = input("Please enter the password length you'd like, or leave blank to exit.\n")
-                if password_len.strip() == '':
+                password_len_str = input("Please enter the password length you'd like, or leave blank to exit.\n")
+                if password_len_str.strip() == '':
                     break
-                password_len = password_len.replace(" ", "")
+                password_len_str = password_len_str.replace(" ", "")
                 
-
+                # # Converting from string to integer
+                # password_len = int(password_len_str)
+                
+                # min_len = 5
+                # if password_len < min_len:
+                #     print("Recommended passwords must be atleast 5 characters.")
+                #     continue
+                
                 # open password-srv.txt file and write the requested service
                 pword_file = open(PASSWORD_PATH, "w")
-                pword_file.write("password-recommendation " + password_len)
+                pword_file.write("password-recommendation " + password_len_str)
                 pword_file.close()
 
                 # Sleep for 2 seconds
-                time.sleep(2)
+                time.sleep(3)
 
                 # Open result.txt, print contents, and then delete contents
                 result_file = open(RESULT_PATH, "r")
@@ -152,9 +187,9 @@ def runUI():
                 result_file.close()
 
                 # Sleep for 2 seconds
-                time.sleep(2)
-
-        elif user_input.startswith("help") or user_input.startswith("5"):  ## FIXME:
+                time.sleep(3)
+                
+        elif user_input.startswith("help") or user_input.startswith("6"):  ## FIXME: Still will not close until process is done running
             # Pulls up video walkthroughs
             print("Help is on the way!")
             
@@ -175,31 +210,42 @@ def runUI():
 
 
 ## ------- Code for help video -------
+def getVideoSource(source, width, height):
+    cap = cv2.VideoCapture(source)
+    cap.set(cv2.CAP_PROP_FRAME_WIDTH, width)
+    cap.set(cv2.CAP_PROP_FRAME_HEIGHT, height)
+    return cap
+
 def open_video(video, audio):
     print("Pulling up Video......")
-    video_capture = cv2.VideoCapture(video)
-    audio_capture = AudioSegment.from_file(audio, format = "m4a")
+    height = 480
+    width = 720
+    video_capture = getVideoSource(video, width, height)
+    audio_player = MediaPlayer(audio)
     
     if video_capture.isOpened() == False:
         print("Error opening video... Please try again.")
         
-    while(video_capture.isOpened()):
+    exit_time = False
+    
+    while(video_capture.isOpened() and (exit_time == False)):
         ret, frame = video_capture.read()
-        if not ret:
+        audio_frame, val = audio_player.get_frame()
+        
+        if ret == 0:
+            print("End of Video")
+            video_capture.release()
+            cv2.destroyWindow("Video")
             break
         
-        # Then Display the frame
-        cv2.imshow("Help Video", frame)
+        cv2.imshow("Video", frame)
         
         # Press q on the keyboard to exit
-        if cv2.waitKey(1) & 0xFF == ord('q'):
+        if cv2.waitKey(28) & 0xFF == ord('q'):
+            exit_time = True
+            video_capture.release()
+            cv2.destroyWindow("Video")
             break
-        play_audio(audio_capture)
-    
-    # When video is done, release the video capture opject and close all windows
-    video_capture.release()
-    cv2.destroyAllWindows()
-
 
 if __name__ == "__main__":
     runUI()
