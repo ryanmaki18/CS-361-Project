@@ -126,7 +126,8 @@ def runUI():
                 time.sleep(2)
                 
         elif user_input.startswith("complexity-check") or user_input.startswith("4"):
-            print("complexity-check.")
+            print("complexity-check selected.")
+            print("Good passwords have lower/uppercase letters, numbers, and special charatcers. ")
             
             while True:
                 # Loops until input is left blank
@@ -241,7 +242,7 @@ def open_video(video, audio):
         cv2.imshow("Video", frame)
         
         # Press q on the keyboard to exit
-        if cv2.waitKey(28) & 0xFF == ord('q'):
+        if cv2.waitKey(1) & 0xFF == ord('q'):
             exit_time = True
             video_capture.release()
             cv2.destroyWindow("Video")
