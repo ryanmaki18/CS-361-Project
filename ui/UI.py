@@ -14,16 +14,17 @@ RECOMMENDATION_AUDIO_PATH = "/Users/ryanmaki/Documents/UO/CS361/CS-361-Project/V
 
 starting_message = """
 Please enter the number or name of the service you'd like to use: 
+    (Not yet Fully Encrypted!)
 1 - compromised-password-check
 2 - common-password-check
 3 - combined-check
-    (Checks if compromised or common; Never stores your information)
+    (Checks if compromised or common)
 4 - complexity-check
     (Checks if password meets complexity requirements)
 5 - password-recommendation
     (Recommends a safe and strong password of any length)
 6 - help 
-    (Pulls up explaination videos)
+    (Pulls up explaination videos; Will force you to exit when done)
 Leave Blank to Exit. 
 
 """
@@ -218,7 +219,7 @@ def getVideoSource(source, width, height):
     return cap
 
 def open_video(video, audio):
-    print("Pulling up Video......")
+    print("Pulling up Video...... Press 'q' to Exit.")
     height = 480
     width = 720
     video_capture = getVideoSource(video, width, height)
@@ -226,27 +227,27 @@ def open_video(video, audio):
     
     if video_capture.isOpened() == False:
         print("Error opening video... Please try again.")
+        return
         
-    exit_time = False
+    # exit_time = False
     
-    while(video_capture.isOpened() and (exit_time == False)):
+    while(video_capture.isOpened()):
         ret, frame = video_capture.read()
         audio_frame, val = audio_player.get_frame()
         
         if ret == 0:
             print("End of Video")
-            video_capture.release()
-            cv2.destroyWindow("Video")
             break
         
         cv2.imshow("Video", frame)
         
         # Press q on the keyboard to exit
-        if cv2.waitKey(1) & 0xFF == ord('q'):
-            exit_time = True
+        if cv2.waitKey(1) == ord('\n'):
             video_capture.release()
             cv2.destroyWindow("Video")
             break
+    video_capture.release()
+    cv2.destroyWindow("Video")
 
 if __name__ == "__main__":
     runUI()
