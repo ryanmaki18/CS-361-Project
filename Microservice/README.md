@@ -34,8 +34,7 @@ Which prints the JSON format:
 """   
 
 **- Clear instructions for how to programmatically RECEIVE data from the microservice you implemented.**   
-To programmatically receive data from the microservice, you must first ensure that the get_ratios.py file is running.   
-
+To programmatically receive data from the microservice, you must first ensure that the get_ratios.py file is running. Run the file with "python3 get_ratios.py". Once it is running, it will be listening for all incoming requests on "http://localhost:5000/get_ratios". You can now send requests to the service as shown above, and it will return the 3 ratios.      
 
  **- UML sequence diagram showing how requesting and receiving data works.**   
     
