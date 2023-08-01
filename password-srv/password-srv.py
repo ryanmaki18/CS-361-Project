@@ -1,4 +1,5 @@
 # Microservice that takes commands/inputs from password-srv.txt
+import requests
 import time
 import json
 import string
@@ -10,6 +11,10 @@ RESULT_PATH = "/Users/ryanmaki/Documents/UO/CS361/CS-361-Project/result.txt"
 
 SORTED_COMPROMISED_PWORDS = "/Users/ryanmaki/Documents/UO/CS361/CS-361-Project/password-srv/sorted_compromised_passwords.json"
 SORTED_COMMON_PWORDS = "/Users/ryanmaki/Documents/UO/CS361/CS-361-Project/password-srv/sorted_common_passwords.json"
+
+ENCRYPTION_SERVICE_URL = 'http://127.0.0.1:9001/encrypt'
+DECRYPTION_SERVICE_URL = 'http://127.0.0.1:9001/decrypt'
+SECRET_KEY = "SecretKey"
 
 def runSRV():
     while True:
@@ -30,8 +35,14 @@ def runSRV():
 
             line = line.replace("compromised-password-check ", "")
 
+            # Decrypt the password before performing checks
+            decrypted_password = decrypt_password(line, SECRET_KEY)
+            if decrypted_password is None:
+                print("Error when decrypting password")
+                continue
+            
             # Pass password to compromised check
-            compromised_check = password_check(SORTED_COMPROMISED_PWORDS, line)
+            compromised_check = password_check(SORTED_COMPROMISED_PWORDS, decrypted_password)
             
             if compromised_check == True:
                 result = "The entered password is compromised! Change your password immediately!"
@@ -48,8 +59,14 @@ def runSRV():
         elif line.startswith("common-password-check"):
             line = line.replace("common-password-check ", "")
             
+            # Decrypt the password before performing checks
+            decrypted_password = decrypt_password(line, SECRET_KEY)
+            if decrypted_password is None:
+                print("Error when decrypting password")
+                continue
+            
             # Pass password to common check
-            common_check = password_check(SORTED_COMMON_PWORDS, line)
+            common_check = password_check(SORTED_COMMON_PWORDS, decrypted_password)
             
             if common_check:
                 result = "The entered password is commonly used! Please choose a stronger password."
@@ -66,9 +83,15 @@ def runSRV():
         elif line.startswith("combined-check"):
             line = line.replace("combined-check ", "")
 
+            # Decrypt the password before performing checks
+            decrypted_password = decrypt_password(line, SECRET_KEY)
+            if decrypted_password is None:
+                print("Error when decrypting password")
+                continue
+
             # Pass password to both password checks
-            compromised_check = password_check(SORTED_COMPROMISED_PWORDS, line)
-            common_check = password_check(SORTED_COMMON_PWORDS, line)
+            compromised_check = password_check(SORTED_COMPROMISED_PWORDS, decrypted_password)
+            common_check = password_check(SORTED_COMMON_PWORDS, decrypted_password)
 
             if compromised_check and common_check:
                 result = "The entered password is compromised and commonly used! Change your password immediately!"
@@ -88,10 +111,16 @@ def runSRV():
         elif line.startswith("complexity-check"):
             line = line.replace("complexity-check ", "")
             
+            # Decrypt the password before performing checks
+            decrypted_password = decrypt_password(line, SECRET_KEY)
+            if decrypted_password is None:
+                print("Error when decrypting password")
+                continue
+            
             # Pass password to both checks (length and complexity)
             min_length = 12
-            length_check = lengthCheck(line, min_length)
-            complexity_check = complexityCheck(line)
+            length_check = lengthCheck(decrypted_password, min_length)
+            complexity_check = complexityCheck(decrypted_password)
             
             if not length_check:
                 result = "The entered password did not meet length requirements! Good passwords are at least 12 characters."
@@ -126,16 +155,20 @@ def runSRV():
                 
                 if compromised_check or common_check:
                     continue
-                # elif notComplex:
-                #     continue
                 else:
                     unsafe = False
+            
+            # Encrypt password before sending
+            encrypted_password = encrypt_password(result, SECRET_KEY)
+            if encrypted_password is None:
+                print("Error when encrypting password")
+                continue
                 
 
             # Clear contents of both pword_file and write to result_file
             pword_file = open(PASSWORD_PATH, "w")
             result_file = open(RESULT_PATH, "w")
-            result_file.write(result)
+            result_file.write(encrypted_password)
 
         else:
             print("Unknown command in password-srv.txt file")
@@ -144,6 +177,28 @@ def runSRV():
         pword_file.close()
         result_file.close()
 
+## ------- Encrypting and Decrypting Password Using Service my Partner Created -------
+def encrypt_password(password, key):
+    encrypt_data = {'password': password, 'key': key}
+    encrypt_response = requests.post(ENCRYPTION_SERVICE_URL, json=encrypt_data)
+    
+    if encrypt_response.status_code == 200:
+        encrypted_password = encrypt_response.json()['encrypted_password']
+        return encrypted_password
+    else:
+        print("Error in encryption response:", encrypt_response.text)
+        return None
+
+def decrypt_password(encrypted_password, key):
+    decrypt_data = {'encrypted_password': encrypted_password, 'key': key}
+    decrypt_response = requests.post(DECRYPTION_SERVICE_URL, json=decrypt_data)
+
+    if decrypt_response.status_code == 200:
+        decrypted_password = decrypt_response.json()['decrypted_password']
+        return decrypted_password
+    else:
+        print("Error in decryption response:", decrypt_response.text)
+        return None
 
 ## ---------- Code for Password Checks ------------
 def binary_search(arr, target):
