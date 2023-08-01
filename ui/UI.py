@@ -42,7 +42,6 @@ Leave Blank to Exit.
 
 def runUI():
     while True:
-
         # prompt user for service selection 
         user_input = input(starting_message)
 
@@ -63,32 +62,16 @@ def runUI():
                 # Encrypt password before sending/using
                 encrypted_password = encrypt_password(password, SECRET_KEY)
                 if encrypted_password is None:
-                    print("Error when encrypting password")
                     continue
 
                 # Sends encrypted password to password-srv.py and executes the code associated with the selected service
                 selected_service = "compromised-password-check "
-                send_recieve(selected_service, encrypted_password)                    #FIXME: TEST!!!!!!!!!!!!!!!!
+                result = send_recieve(selected_service, encrypted_password)
+                print(result)
                 
-                # # open password-srv.txt file and write the requested service, along with password
-                # pword_file = open(PASSWORD_PATH, "w")
-                # pword_file.write("compromised-password-check " + encrypted_password)
-                # pword_file.close()
-
-                # # Sleep for 2 seconds
-                # time.sleep(2)
-
-                # # Open result.txt, print contents, and then delete contents
-                # result_file = open(RESULT_PATH, "r")
-                # result = result_file.read()
-                # print(result)
-                # result_file = open(RESULT_PATH, "w")
-                # result_file.close()
-
-                # # Sleep for 2 seconds
-                # time.sleep(2)
+                # Sleep for 2 seconds
+                time.sleep(2)
                 
-
         elif user_input.startswith("common-password-check") or user_input.startswith("2"):
             print("common-password-check selected.")
 
@@ -101,31 +84,16 @@ def runUI():
                 # Encrypt password before sending/using
                 encrypted_password = encrypt_password(password, SECRET_KEY)
                 if encrypted_password is None:
-                    print("Error when encrypting password")
                     continue 
                 
                 # Sends encrypted password to password-srv.py and executes the code associated with the selected service
                 selected_service = "common-password-check "
-                send_recieve(selected_service, encrypted_password)
+                result = send_recieve(selected_service, encrypted_password)
+                print(result)
                 
-                # # open password-srv.txt file and write the requested service, along with password
-                # pword_file = open(PASSWORD_PATH, "w")
-                # pword_file.write("common-password-check " + encrypted_password)
-                # pword_file.close()
-
-                # # Sleep for 2 seconds
-                # time.sleep(2)
+                # Sleep for 2 seconds
+                time.sleep(2)
                 
-                # # Open result.txt, print contents, and then delete contents
-                # result_file = open(RESULT_PATH, "r")
-                # result = result_file.read()
-                # print(result)
-                # result_file = open(RESULT_PATH, "w")
-                # result_file.close()
-
-                # # Sleep for 2 seconds
-                # time.sleep(2)
-
         elif user_input.startswith("combined-check") or user_input.startswith("3"):
             print("combined-check selected.")
             
@@ -138,31 +106,16 @@ def runUI():
                 # Encrypt password before sending/using
                 encrypted_password = encrypt_password(password, SECRET_KEY)
                 if encrypted_password is None:
-                    print("Error when encrypting password")
                     continue
                 
                 # Sends encrypted password to password-srv.py and executes the code associated with the selected service
                 selected_service = "combined-check "
-                send_recieve(selected_service, encrypted_password)
-                    
-                # # open password-srv.txt file and write the requested service, along with password
-                # pword_file = open(PASSWORD_PATH, "w")
-                # pword_file.write("combined-check " + encrypted_password)
-                # pword_file.close()
+                result = send_recieve(selected_service, encrypted_password)
+                print(result)
                 
-                # # Sleep for 2 seconds
-                # time.sleep(2)
+                # Sleep for 2 seconds
+                time.sleep(2)
 
-                # # Open result.txt, print contents, and then delete contents
-                # result_file = open(RESULT_PATH, "r")
-                # result = result_file.read()
-                # print(result)
-                # result_file = open(RESULT_PATH, "w")
-                # result_file.close()
-
-                # # Sleep for 2 seconds
-                # time.sleep(2)
-                
         elif user_input.startswith("complexity-check") or user_input.startswith("4"):
             print("complexity-check selected.")
             print("Good passwords have lower/uppercase letters, numbers, and special charatcers. ")
@@ -176,31 +129,16 @@ def runUI():
                 # Encrypt password before sending/using
                 encrypted_password = encrypt_password(password, SECRET_KEY)
                 if encrypted_password is None:
-                    print("Error when encrypting password")
                     continue
                 
                 # Sends encrypted password to password-srv.py and executes the code associated with the selected service
                 selected_service = "complexity-check "
-                send_recieve(selected_service, encrypted_password)
-                    
-                # # open password-srv.txt file and write the requested service, along with password
-                # pword_file = open(PASSWORD_PATH, "w")
-                # pword_file.write("complexity-check " + encrypted_password)
-                # pword_file.close()
+                result = send_recieve(selected_service, encrypted_password)
+                print(result)
                 
-                # # Sleep for 2 seconds
-                # time.sleep(2)
-
-                # # Open result.txt, print contents, and then delete contents
-                # result_file = open(RESULT_PATH, "r")
-                # result = result_file.read()
-                # print(result)
-                # result_file = open(RESULT_PATH, "w")
-                # result_file.close()
-
-                # # Sleep for 2 seconds
-                # time.sleep(2)
-            
+                # Sleep for 2 seconds
+                time.sleep(2)
+                    
         elif user_input.startswith("password-recommendation") or user_input.startswith("5"):
             print("password-recommendation selected.")
             
@@ -211,32 +149,21 @@ def runUI():
                     break
                 password_len_str = password_len_str.replace(" ", "")
                 
-                # open password-srv.txt file and write the requested service
-                pword_file = open(PASSWORD_PATH, "w")
-                pword_file.write("password-recommendation " + password_len_str)
-                pword_file.close()
-
-                # Sleep for 3 seconds
-                time.sleep(3)
-
-                # Open result.txt; decrypt, print, and then delete contents
-                result_file = open(RESULT_PATH, "r")
-                result = result_file.read()
+                # Sends encrypted password to password-srv.py and executes the code associated with the selected service
+                selected_service = "password-recommendation "
+                result = send_recieve(selected_service, password_len_str)
                 
                 # Decrypt the password before displaying
                 decrypted_password = decrypt_password(result, SECRET_KEY)
                 if decrypted_password is None:
-                    print("Error when decrypting password")
                     continue
                 
                 print("Your recommended password is:")
                 print(result)
                 print("Password was checked and is safe.")
-                result_file = open(RESULT_PATH, "w")
-                result_file.close()
-
+                
                 # Sleep for 3 seconds
-                time.sleep(3)
+                time.sleep(3)                
                 
         elif user_input.startswith("help") or user_input.startswith("6"):  ## FIXME: Still will not close until process is done running
             # Pulls up video walkthroughs
@@ -257,6 +184,23 @@ def runUI():
         else:
             print("Unknown Option")
 
+
+## ------ Code for Sending/Recieveing Password
+def send_recieve(service, passwordORpassword_len):     
+    # open password-srv.txt file and write the requested service, along with password
+    pword_file = open(PASSWORD_PATH, "w")
+    pword_file.write(service + passwordORpassword_len)
+    pword_file.close()
+
+    # Sleep for 2 seconds
+    time.sleep(2)
+
+    # Open result.txt, print contents, and then delete contents
+    result_file = open(RESULT_PATH, "r")
+    result = result_file.read()
+    result_file = open(RESULT_PATH, "w")
+    result_file.close()
+    return result                       # FIXME: Updated, not tested.
 
 ## ------- Encrypting and Decrypting Password Using Service my Partner Created -------
 def encrypt_password(password, key):
@@ -281,26 +225,6 @@ def decrypt_password(encrypted_password, key):
         print("Error in decryption response:", decrypt_response.text)
         return None
 
-## ------ Code for Sending/Recieveing Password
-def send_recieve(service, password):     
-    # open password-srv.txt file and write the requested service, along with password
-    pword_file = open(PASSWORD_PATH, "w")
-    pword_file.write(service + password)
-    pword_file.close()
-
-    # Sleep for 2 seconds
-    time.sleep(2)
-
-    # Open result.txt, print contents, and then delete contents
-    result_file = open(RESULT_PATH, "r")
-    result = result_file.read()
-    print(result)
-    result_file = open(RESULT_PATH, "w")
-    result_file.close()
-
-    # Sleep for 2 seconds
-    time.sleep(2)
-
 ## ------- Code for help video -------
 def getVideoSource(source, width, height):
     cap = cv2.VideoCapture(source)
@@ -318,8 +242,6 @@ def open_video(video, audio):
     if video_capture.isOpened() == False:
         print("Error opening video... Please try again.")
         return
-        
-    # exit_time = False
     
     while(video_capture.isOpened()):
         ret, frame = video_capture.read()

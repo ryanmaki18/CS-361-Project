@@ -18,7 +18,6 @@ SECRET_KEY = "SecretKey"
 
 def runSRV():
     while True:
-
         # Sleep for 1 second
         time.sleep(1)
 
@@ -32,13 +31,11 @@ def runSRV():
 
         # Compromised Password Check
         if line.startswith("compromised-password-check"):
-
             line = line.replace("compromised-password-check ", "")
 
             # Decrypt the password before performing checks
             decrypted_password = decrypt_password(line, SECRET_KEY)
             if decrypted_password is None:
-                print("Error when decrypting password")
                 continue
             
             # Pass password to compromised check
@@ -49,11 +46,7 @@ def runSRV():
             else:
                 result = "Password is safe."
 
-            # Clear contents of both pword_file and write to result_file
-            pword_file = open(PASSWORD_PATH, "w")
-            result_file = open(RESULT_PATH, "w")
-            result_file.write(result)
-
+            clearAndSend(result)
 
         # Common Password Check
         elif line.startswith("common-password-check"):
@@ -62,7 +55,6 @@ def runSRV():
             # Decrypt the password before performing checks
             decrypted_password = decrypt_password(line, SECRET_KEY)
             if decrypted_password is None:
-                print("Error when decrypting password")
                 continue
             
             # Pass password to common check
@@ -73,11 +65,7 @@ def runSRV():
             else:
                 result = "Password is safe."
 
-            # Clear contents of both pword_file and write to result_file
-            pword_file = open(PASSWORD_PATH, "w")
-            result_file = open(RESULT_PATH, "w")
-            result_file.write(result)
-
+            clearAndSend(result)
 
         # Combined Check (Compromised and Common)
         elif line.startswith("combined-check"):
@@ -86,7 +74,6 @@ def runSRV():
             # Decrypt the password before performing checks
             decrypted_password = decrypt_password(line, SECRET_KEY)
             if decrypted_password is None:
-                print("Error when decrypting password")
                 continue
 
             # Pass password to both password checks
@@ -102,10 +89,7 @@ def runSRV():
             else:
                 result = "Password is safe."
             
-            # Clear contents of both pword_file and write to result_file
-            pword_file = open(PASSWORD_PATH, "w")
-            result_file = open(RESULT_PATH, "w")
-            result_file.write(result)
+            clearAndSend(result)
             
         # Complexity Check 
         elif line.startswith("complexity-check"):
@@ -114,7 +98,6 @@ def runSRV():
             # Decrypt the password before performing checks
             decrypted_password = decrypt_password(line, SECRET_KEY)
             if decrypted_password is None:
-                print("Error when decrypting password")
                 continue
             
             # Pass password to both checks (length and complexity)
@@ -129,11 +112,7 @@ def runSRV():
             else:
                 result = "Password meets all complexity requirements."
             
-            # Clear contents of both pword_file and write to result_file
-            pword_file = open(PASSWORD_PATH, "w")
-            result_file = open(RESULT_PATH, "w")
-            result_file.write(result)
-            
+            clearAndSend(result)
         
         # Password Recommendation
         elif line.startswith("password-recommendation"):
@@ -161,20 +140,23 @@ def runSRV():
             # Encrypt password before sending
             encrypted_password = encrypt_password(result, SECRET_KEY)
             if encrypted_password is None:
-                print("Error when encrypting password")
                 continue
                 
-
-            # Clear contents of both pword_file and write to result_file
-            pword_file = open(PASSWORD_PATH, "w")
-            result_file = open(RESULT_PATH, "w")
-            result_file.write(encrypted_password)
+            clearAndSend(encrypted_password)
 
         else:
             print("Unknown command in password-srv.txt file")
         
         # Close File
         pword_file.close()
+
+        
+## Code for clearing .txt files and writing results to result_file
+def clearAndSend(results):
+    # Clear contents of both pword_file and result_file, write to result_file
+        pword_file = open(PASSWORD_PATH, "w")
+        result_file = open(RESULT_PATH, "w")
+        result_file.write(results)
         result_file.close()
 
 ## ------- Encrypting and Decrypting Password Using Service my Partner Created -------
@@ -229,7 +211,6 @@ def password_check(password_file, password):
     else:
         return False
     
-    
 ## ---------- Code for Complexity Check ------------
 def lengthCheck(password, min_length):
     if len(password) < min_length:
@@ -255,7 +236,6 @@ def complexityCheck(password):
     
     return True
     
-
 ## ---------- Code for password recommendation ------------
 def password_recommendation(password_length):
     char_options = string.ascii_letters + string.digits + string.punctuation
