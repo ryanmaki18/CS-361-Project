@@ -66,8 +66,8 @@ def runUI():
 
                 # Sends encrypted password to password-srv.py and executes the code associated with the selected service
                 selected_service = "compromised-password-check "
-                result = send_recieve(selected_service, encrypted_password)
-                print(result)
+                response = send_request(selected_service, encrypted_password)
+                print(response.get('result'))
                 
                 # Sleep for 2 seconds
                 time.sleep(2)
@@ -88,7 +88,7 @@ def runUI():
                 
                 # Sends encrypted password to password-srv.py and executes the code associated with the selected service
                 selected_service = "common-password-check "
-                result = send_recieve(selected_service, encrypted_password)
+                result = send_request(selected_service, encrypted_password)
                 print(result)
                 
                 # Sleep for 2 seconds
@@ -110,7 +110,7 @@ def runUI():
                 
                 # Sends encrypted password to password-srv.py and executes the code associated with the selected service
                 selected_service = "combined-check "
-                result = send_recieve(selected_service, encrypted_password)
+                result = send_request(selected_service, encrypted_password)
                 print(result)
                 
                 # Sleep for 2 seconds
@@ -133,7 +133,7 @@ def runUI():
                 
                 # Sends encrypted password to password-srv.py and executes the code associated with the selected service
                 selected_service = "complexity-check "
-                result = send_recieve(selected_service, encrypted_password)
+                result = send_request(selected_service, encrypted_password)
                 print(result)
                 
                 # Sleep for 2 seconds
@@ -151,7 +151,7 @@ def runUI():
                 
                 # Sends encrypted password to password-srv.py and executes the code associated with the selected service
                 selected_service = "password-recommendation "
-                result = send_recieve(selected_service, password_len_str)
+                result = send_request(selected_service, password_len_str)
                 
                 # Decrypt the password before displaying
                 decrypted_password = decrypt_password(result, SECRET_KEY)
@@ -186,21 +186,32 @@ def runUI():
 
 
 ## ------ Code for Sending/Recieveing Password
-def send_recieve(service, passwordORpassword_len):     
-    # open password-srv.txt file and write the requested service, along with password
-    pword_file = open(PASSWORD_PATH, "w")
-    pword_file.write(service + passwordORpassword_len)
-    pword_file.close()
+# def send_recieve(service, passwordORpassword_len):     
+#     # open password-srv.txt file and write the requested service, along with password
+#     pword_file = open(PASSWORD_PATH, "w")
+#     pword_file.write(service + passwordORpassword_len)
+#     pword_file.close()
 
-    # Sleep for 2 seconds
-    time.sleep(2)
+#     # Sleep for 2 seconds
+#     time.sleep(2)
 
-    # Open result.txt, print contents, and then delete contents
-    result_file = open(RESULT_PATH, "r")
-    result = result_file.read()
-    result_file = open(RESULT_PATH, "w")
-    result_file.close()
-    return result                       # FIXME: Updated, not tested.
+#     # Open result.txt, print contents, and then delete contents
+#     result_file = open(RESULT_PATH, "r")
+#     result = result_file.read()
+#     result_file = open(RESULT_PATH, "w")
+#     result_file.close()
+#     return result                       # FIXME: Updated, not tested.
+
+def send_request(selected_service, encrypted_password=None):
+    url = 'http://127.0.0.1:9002/passwords'
+    data = {'selected_service': selected_service, 'encrypted_password': encrypted_password}
+    response = requests.post(url, json=data)
+    
+    if response.status_code == 200:
+        return response.json()
+    else:
+        print(f"Error: {response.status_code} - {response.text}")
+        return None
 
 ## ------- Encrypting and Decrypting Password Using Service my Partner Created -------
 def encrypt_password(password, key):
