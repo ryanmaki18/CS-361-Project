@@ -65,12 +65,9 @@ def runUI():
                     continue
 
                 # Sends encrypted password to password-srv.py and executes the code associated with the selected service
-                selected_service = "compromised-password-check "
+                selected_service = "compromised-password-check"
                 response = send_request(selected_service, encrypted_password)
                 print(response.get('result'))
-                
-                # Sleep for 2 seconds
-                time.sleep(2)
                 
         elif user_input.startswith("common-password-check") or user_input.startswith("2"):
             print("common-password-check selected.")
@@ -87,12 +84,9 @@ def runUI():
                     continue 
                 
                 # Sends encrypted password to password-srv.py and executes the code associated with the selected service
-                selected_service = "common-password-check "
-                result = send_request(selected_service, encrypted_password)
-                print(result)
-                
-                # Sleep for 2 seconds
-                time.sleep(2)
+                selected_service = "common-password-check"
+                response = send_request(selected_service, encrypted_password)
+                print(response.get('result'))
                 
         elif user_input.startswith("combined-check") or user_input.startswith("3"):
             print("combined-check selected.")
@@ -109,16 +103,13 @@ def runUI():
                     continue
                 
                 # Sends encrypted password to password-srv.py and executes the code associated with the selected service
-                selected_service = "combined-check "
-                result = send_request(selected_service, encrypted_password)
-                print(result)
-                
-                # Sleep for 2 seconds
-                time.sleep(2)
+                selected_service = "combined-check"
+                response = send_request(selected_service, encrypted_password)
+                print(response.get('result'))
 
         elif user_input.startswith("complexity-check") or user_input.startswith("4"):
             print("complexity-check selected.")
-            print("Good passwords have lower/uppercase letters, numbers, and special charatcers. ")
+            print("Good passwords have lower/uppercase letters, numbers, and special charatcers.")
             
             while True:
                 # Loops until input is left blank
@@ -132,12 +123,9 @@ def runUI():
                     continue
                 
                 # Sends encrypted password to password-srv.py and executes the code associated with the selected service
-                selected_service = "complexity-check "
-                result = send_request(selected_service, encrypted_password)
-                print(result)
-                
-                # Sleep for 2 seconds
-                time.sleep(2)
+                selected_service = "complexity-check"
+                response = send_request(selected_service, encrypted_password)
+                print(response.get('result'))
                     
         elif user_input.startswith("password-recommendation") or user_input.startswith("5"):
             print("password-recommendation selected.")
@@ -151,19 +139,16 @@ def runUI():
                 
                 # Sends encrypted password to password-srv.py and executes the code associated with the selected service
                 selected_service = "password-recommendation "
-                result = send_request(selected_service, password_len_str)
+                response = send_request(selected_service, password_len_str)
                 
                 # Decrypt the password before displaying
-                decrypted_password = decrypt_password(result, SECRET_KEY)
+                decrypted_password = decrypt_password(response.get('result'), SECRET_KEY)
                 if decrypted_password is None:
                     continue
                 
                 print("Your recommended password is:")
-                print(result)
-                print("Password was checked and is safe.")
-                
-                # Sleep for 3 seconds
-                time.sleep(3)                
+                print(response.get('result'))
+                print("Password was checked and is safe.")                
                 
         elif user_input.startswith("help") or user_input.startswith("6"):  ## FIXME: Still will not close until process is done running
             # Pulls up video walkthroughs
@@ -200,7 +185,7 @@ def runUI():
 #     result = result_file.read()
 #     result_file = open(RESULT_PATH, "w")
 #     result_file.close()
-#     return result                       # FIXME: Updated, not tested.
+#     return result                       # FIXME: Updated, can delete eventually.
 
 def send_request(selected_service, encrypted_password=None):
     url = 'http://127.0.0.1:9002/passwords'

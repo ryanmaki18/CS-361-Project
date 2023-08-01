@@ -19,141 +19,151 @@ ENCRYPTION_SERVICE_URL = 'http://127.0.0.1:9001/encrypt'
 DECRYPTION_SERVICE_URL = 'http://127.0.0.1:9001/decrypt'
 SECRET_KEY = "SecretKey"
 
-# def runSRV():
-#     while True:
-#         # Sleep for 1 second
-#         time.sleep(1)
+## ------- Below code is for .txt file communication (slower) -------
+def runSRV():
+    while True:
+        # Sleep for 1 second
+        time.sleep(1)
 
-#         # open password file and get contents
-#         pword_file = open(PASSWORD_PATH, "r")
-#         line = pword_file.read()
+        # open password file and get contents
+        pword_file = open(PASSWORD_PATH, "r")
+        line = pword_file.read()
 
-#         # If file is blank
-#         if line == '' or line == ' ':
-#             continue
+        # If file is blank
+        if line == '' or line == ' ':
+            continue
 
-#         # Compromised Password Check
-#         if line.startswith("compromised-password-check"):
-#             line = line.replace("compromised-password-check ", "")
+        # Compromised Password Check
+        if line.startswith("compromised-password-check"):
+            line = line.replace("compromised-password-check ", "")
 
-#             # Decrypt the password before performing checks
-#             decrypted_password = decrypt_password(line, SECRET_KEY)
-#             if decrypted_password is None:
-#                 continue
+            # Decrypt the password before performing checks
+            decrypted_password = decrypt_password(line, SECRET_KEY)
+            if decrypted_password is None:
+                continue
             
-#             # Pass password to compromised check
-#             compromised_check = password_check(SORTED_COMPROMISED_PWORDS, decrypted_password)
+            # Pass password to compromised check
+            compromised_check = password_check(SORTED_COMPROMISED_PWORDS, decrypted_password)
             
-#             if compromised_check == True:
-#                 result = "The entered password is compromised! Change your password immediately!"
-#             else:
-#                 result = "Password is safe."
+            if compromised_check == True:
+                result = "The entered password is compromised! Change your password immediately!"
+            else:
+                result = "Password is safe."
 
-#             clearAndSend(result)
+            clearAndSend(result)
 
-#         # Common Password Check
-#         elif line.startswith("common-password-check"):
-#             line = line.replace("common-password-check ", "")
+        # Common Password Check
+        elif line.startswith("common-password-check"):
+            line = line.replace("common-password-check ", "")
             
-#             # Decrypt the password before performing checks
-#             decrypted_password = decrypt_password(line, SECRET_KEY)
-#             if decrypted_password is None:
-#                 continue
+            # Decrypt the password before performing checks
+            decrypted_password = decrypt_password(line, SECRET_KEY)
+            if decrypted_password is None:
+                continue
             
-#             # Pass password to common check
-#             common_check = password_check(SORTED_COMMON_PWORDS, decrypted_password)
+            # Pass password to common check
+            common_check = password_check(SORTED_COMMON_PWORDS, decrypted_password)
             
-#             if common_check:
-#                 result = "The entered password is commonly used! Please choose a stronger password."
-#             else:
-#                 result = "Password is safe."
+            if common_check:
+                result = "The entered password is commonly used! Please choose a stronger password."
+            else:
+                result = "Password is safe."
 
-#             clearAndSend(result)
+            clearAndSend(result)
 
-#         # Combined Check (Compromised and Common)
-#         elif line.startswith("combined-check"):
-#             line = line.replace("combined-check ", "")
+        # Combined Check (Compromised and Common)
+        elif line.startswith("combined-check"):
+            line = line.replace("combined-check ", "")
 
-#             # Decrypt the password before performing checks
-#             decrypted_password = decrypt_password(line, SECRET_KEY)
-#             if decrypted_password is None:
-#                 continue
+            # Decrypt the password before performing checks
+            decrypted_password = decrypt_password(line, SECRET_KEY)
+            if decrypted_password is None:
+                continue
 
-#             # Pass password to both password checks
-#             compromised_check = password_check(SORTED_COMPROMISED_PWORDS, decrypted_password)
-#             common_check = password_check(SORTED_COMMON_PWORDS, decrypted_password)
+            # Pass password to both password checks
+            compromised_check = password_check(SORTED_COMPROMISED_PWORDS, decrypted_password)
+            common_check = password_check(SORTED_COMMON_PWORDS, decrypted_password)
 
-#             if compromised_check and common_check:
-#                 result = "The entered password is compromised and commonly used! Change your password immediately!"
-#             elif compromised_check:
-#                 result = "The entered password is compromised! Change your password immediately!"
-#             elif common_check:
-#                 result = "The entered password is commonly used! Please choose a stronger password."
-#             else:
-#                 result = "Password is safe."
+            if compromised_check and common_check:
+                result = "The entered password is compromised and commonly used! Change your password immediately!"
+            elif compromised_check:
+                result = "The entered password is compromised! Change your password immediately!"
+            elif common_check:
+                result = "The entered password is commonly used! Please choose a stronger password."
+            else:
+                result = "Password is safe."
             
-#             clearAndSend(result)
+            clearAndSend(result)
             
-#         # Complexity Check 
-#         elif line.startswith("complexity-check"):
-#             line = line.replace("complexity-check ", "")
+        # Complexity Check 
+        elif line.startswith("complexity-check"):
+            line = line.replace("complexity-check ", "")
             
-#             # Decrypt the password before performing checks
-#             decrypted_password = decrypt_password(line, SECRET_KEY)
-#             if decrypted_password is None:
-#                 continue
+            # Decrypt the password before performing checks
+            decrypted_password = decrypt_password(line, SECRET_KEY)
+            if decrypted_password is None:
+                continue
             
-#             # Pass password to both checks (length and complexity)
-#             min_length = 12
-#             length_check = lengthCheck(decrypted_password, min_length)
-#             complexity_check = complexityCheck(decrypted_password)
+            # Pass password to both checks (length and complexity)
+            min_length = 12
+            length_check = lengthCheck(decrypted_password, min_length)
+            complexity_check = complexityCheck(decrypted_password)
             
-#             if not length_check:
-#                 result = "The entered password did not meet length requirements! Good passwords are at least 12 characters."
-#             elif not complexity_check:
-#                 result = "The entered password is not complex enough."
-#             else:
-#                 result = "Password meets all complexity requirements."
+            if not length_check:
+                result = "The entered password did not meet length requirements! Good passwords are at least 12 characters."
+            elif not complexity_check:
+                result = "The entered password is not complex enough."
+            else:
+                result = "Password meets all complexity requirements."
             
-#             clearAndSend(result)
+            clearAndSend(result)
         
-#         # Password Recommendation
-#         elif line.startswith("password-recommendation"):
-#             password_len_str = line.replace("password-recommendation ", "")
-#             # Casting the string from input to be an integer
-#             password_len = int(password_len_str)
-#             result = ""
+        # Password Recommendation
+        elif line.startswith("password-recommendation"):
+            password_len_str = line.replace("password-recommendation ", "")
+            # Casting the string from input to be an integer
+            password_len = int(password_len_str)
+            result = ""
             
-#             unsafe = True
-#             while unsafe:
-#                 # Create password
-#                 result = password_recommendation(password_len)
+            unsafe = True
+            while unsafe:
+                # Create password
+                result = password_recommendation(password_len)
                 
-#                 # Pass to both password checks
-#                 compromised_check = password_check(SORTED_COMPROMISED_PWORDS, result)
-#                 common_check = password_check(SORTED_COMMON_PWORDS, result)
-#                 # notComplex = complexityCheck(result)
+                # Pass to both password checks
+                compromised_check = password_check(SORTED_COMPROMISED_PWORDS, result)
+                common_check = password_check(SORTED_COMMON_PWORDS, result)
+                # notComplex = complexityCheck(result)
                 
-#                 if compromised_check or common_check:
-#                     continue
-#                 else:
-#                     unsafe = False
+                if compromised_check or common_check:
+                    continue
+                else:
+                    unsafe = False
             
-#             # Encrypt password before sending
-#             encrypted_password = encrypt_password(result, SECRET_KEY)
-#             if encrypted_password is None:
-#                 continue
+            # Encrypt password before sending
+            encrypted_password = encrypt_password(result, SECRET_KEY)
+            if encrypted_password is None:
+                continue
                 
-#             clearAndSend(encrypted_password)
+            clearAndSend(encrypted_password)
 
-#         else:
-#             print("Unknown command in password-srv.txt file")
+        else:
+            print("Unknown command in password-srv.txt file")
         
-#         # Close File
-#         pword_file.close()
+        # Close File
+        pword_file.close()
+        
+## Code for clearing .txt files and writing results to result_file
+def clearAndSend(results):
+    # Clear contents of both pword_file and result_file, write to result_file
+        pword_file = open(PASSWORD_PATH, "w")                                   #FIXME: DONT THINK I NEED
+        result_file = open(RESULT_PATH, "w")
+        result_file.write(results)
+        result_file.close()
+        
 
-
-@app.route('/password-check', methods=['POST'])
+## ------- Below code is for HTTP Requests (Faster) -------
+@app.route('/passwords', methods=['POST'])
 def handle_password_check():
     data = request.get_json()
     encrypted_password = data.get('encrypted_password')
@@ -226,17 +236,9 @@ def handle_password_check():
         return jsonify({'error': 'Unknown command'}), 400
     
     return jsonify({'result': result})
-        
-        
-## Code for clearing .txt files and writing results to result_file
-def clearAndSend(results):
-    # Clear contents of both pword_file and result_file, write to result_file
-        pword_file = open(PASSWORD_PATH, "w")                                   #FIXME: DONT THINK I NEED
-        result_file = open(RESULT_PATH, "w")
-        result_file.write(results)
-        result_file.close()
 
-## ------- Encrypting and Decrypting Password Using Service my Partner Created -------
+
+## --------- Encrypting and Decrypting Password Using Service my Partner Created ---------
 def encrypt_password(password, key):
     encrypt_data = {'password': password, 'key': key}
     encrypt_response = requests.post(ENCRYPTION_SERVICE_URL, json=encrypt_data)
@@ -349,5 +351,7 @@ def get_password_recommendation(password_length):
     
 
 if __name__ == "__main__":
-    # runSRV()                              #FIXME: Updating to HTTP Requests. This is .txt file version
-    app.run(host='127.0.0.1', port=9002)
+    # runSRV()                              #FIXME: This is .txt file version. Uncomment to use
+    host='127.0.0.1'
+    port=9002
+    app.run(host, port)
