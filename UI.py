@@ -5,7 +5,6 @@ import requests, cv2
 from ffpyplayer.player import MediaPlayer
 import config
 
-
 def runUI():
     while True:
         # prompt user for service selection 
@@ -198,12 +197,13 @@ def open_video(video, audio):
             break
         
         cv2.imshow("Video", frame)
-        
+
         # Press q on the keyboard to exit
         if cv2.waitKey(1) & 0xFF == ord('q'):
             video_capture.release()
             cv2.destroyWindow("Video")
             break
+        
     video_capture.release()
     cv2.destroyWindow("Video")
 

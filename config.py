@@ -1,4 +1,5 @@
-# ------- Config File for Password Service Project -------
+######## ----------- Config File for Password Service Project ----------- ########
+## Made for CS 361 by Ryan Maki
 
 # ----------- For Help Video -----------
 CHECKER_VIDEO_PATH = "/Users/ryanmaki/Documents/UO/CS361/CS-361-Project/VideoAndAudio/checker.mp4"
@@ -23,7 +24,6 @@ SORTED_COMMON_PWORDS = "/Users/ryanmaki/Documents/UO/CS361/CS-361-Project/passwo
 PROBABILITY_LETTERS_AND_NUMS = 0.85
 PROBABILITY_SPECIAL_CHARACTERS = 0.15
 CHARACTER_PROBAILITIES = [PROBABILITY_LETTERS_AND_NUMS, PROBABILITY_SPECIAL_CHARACTERS]
-
 
 # ----------- Messages for UI.py -----------
 starting_message = """

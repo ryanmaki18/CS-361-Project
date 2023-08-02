@@ -141,22 +141,14 @@ def lengthCheck(password, min_length):
     return True
     
 def complexityCheck(password):
-    # Uppercase
-    if not re.search(r'[A-Z]', password):
+    if not re.search(r'[A-Z]', password):          # Uppercase
         return False
-
-    # Lowercase
-    if not re.search(r'[a-z]', password):
+    if not re.search(r'[a-z]', password):          # Lowercase
         return False
-    
-    # Integers
-    if not re.search(r'\d', password):
+    if not re.search(r'\d', password):             # Integers
         return False
-    
-    # Special Characters
-    if not re.search(r'[^a-zA-Z0-9]', password):
+    if not re.search(r'[^a-zA-Z0-9]', password):   # Special Characters
         return False
-    
     return True
     
     
