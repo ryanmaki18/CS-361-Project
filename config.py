@@ -38,7 +38,7 @@ Please enter the number or name of the service you'd like to use:
 5 - password-recommendation
     (Recommends a safe and strong password of any length)
 6 - help 
-    (Pulls up explaination videos; Will force you to exit when done)
+    (Pulls up explanation videos; Will force you to exit when done)
 Leave Blank to Exit. 
 
 """
