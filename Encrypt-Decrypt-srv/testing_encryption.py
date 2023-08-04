@@ -30,6 +30,12 @@ def test_encryption_service():
             # Check if decryption is successful
             assert decrypted_password == password, "Decryption failed."
             print("Encryption and Decryption test passed!")
+            
+            # Check if the decrypted password matches the original password
+            if password == decrypted_password:
+                print("Password and Decrypted Password are the same.")
+            else:
+                print("Password and Decrypted Password are different.")
 
         else:
             print("Error in decryption response:", decrypt_response.text)
