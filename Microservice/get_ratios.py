@@ -19,8 +19,10 @@
 
 from flask import Flask, request, jsonify
 import statistics
+from flask_cors import CORS
 
 app = Flask(__name__)
+CORS(app)
 
 class StockRatiosCalculator:
     def __init__(self):

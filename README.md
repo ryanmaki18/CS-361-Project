@@ -15,4 +15,10 @@ Hey there, this is my CS 361 project. The main file is UI.py which calls upon pa
   - help   
     (Pulls up explanation videos; Will force you to exit when done)  
 
+The compromised password check checks against 100,000 pwned passworded (like from data leaks)
+The common passwords are, as they sound, super common and shouldn't be used.
+The combined check obviously checks for them both.
+The complexity check simply checks of it has upper/lower case letters, a number, and special character.
+Lastly, the password recommendation takes in a password length you would like, and returns a random password of that length. 
+
 Enjoy!

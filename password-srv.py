@@ -25,7 +25,7 @@ def handle_password_check():
     if selected_service == "compromised-password-check":
         # Pass password to compromised check
         compromised_check = password_check(config.SORTED_COMPROMISED_PWORDS, decrypted_password)
-        if compromised_check == True:
+        if compromised_check:
             result = "The entered password is compromised! Change your password immediately!"
         else:
             result = "Password is safe."

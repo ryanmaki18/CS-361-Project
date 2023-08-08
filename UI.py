@@ -198,7 +198,7 @@ def open_video(video, audio):
         
         cv2.imshow("Video", frame)
 
-        # Press q on the keyboard to exit
+        # Press ^C on the keyboard to exit
         if cv2.waitKey(1) & 0xFF == ord('q'):
             video_capture.release()
             cv2.destroyWindow("Video")
