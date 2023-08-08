@@ -11,10 +11,15 @@ VIDEO_WIDTH = 720
 
 # ----------- Used for Encryption Microservice (Made for me by my partner) -----------
 ENCRYPTION_SERVICE_URL = 'http://127.0.0.1:9001/encrypt'
+ENCRYPT_ROUTE='/encrypt'
 DECRYPTION_SERVICE_URL = 'http://127.0.0.1:9001/decrypt'
+DECRYPT_ROUTE='/decrypt'
+ENCRYPT_DECRYPT_PORT = 9001
+SECRET_KEY = 'SecretKey'
 PASSWORD_SRV_URL = 'http://127.0.0.1:9002/passwords'
 PASSWORD_SRV_ROUTE = '/passwords'
-SECRET_KEY = 'SecretKey'
+HOST = '127.0.0.1'
+PASSWORD_SRV_PORT = 9002
 
 # ----------- Used for Compromised and Common Password Checks -----------
 SORTED_COMPROMISED_PWORDS = "/Users/ryanmaki/Documents/UO/CS361/CS-361-Project/password-srv-files/sorted_compromised_passwords.json"

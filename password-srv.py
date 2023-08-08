@@ -193,5 +193,5 @@ def get_password_recommendation(password_length):
     
     
 if __name__ == "__main__":
-    app.run(host='127.0.0.1', port=9002)
+    app.run(host=config.HOST, port=config.PASSWORD_SRV_PORT)
     
