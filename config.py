@@ -1,15 +1,7 @@
 ######## ----------- Config File for Password Service Project ----------- ########
 ## Made for CS 361 by Ryan Maki
 
-# ----------- For Help Video -----------
-CHECKER_VIDEO_PATH = "/Users/ryanmaki/Documents/UO/CS361/CS-361-Project/VideoAndAudio/checker.mp4"
-CHECKER_AUDIO_PATH = "/Users/ryanmaki/Documents/UO/CS361/CS-361-Project/VideoAndAudio/checkerAudio.m4a"
-RECOMMENDATION_VIDEO_PATH = "/Users/ryanmaki/Documents/UO/CS361/CS-361-Project/VideoAndAudio/recommendation.mp4"
-RECOMMENDATION_AUDIO_PATH = "/Users/ryanmaki/Documents/UO/CS361/CS-361-Project/VideoAndAudio/recommendationAudio.m4a"
-VIDEO_HEIGHT = 480
-VIDEO_WIDTH = 720
-
-# ----------- Used for Encryption Microservice (Made for me by my partner) -----------
+# ----------- HTTP Communication Information -----------
 ENCRYPTION_SERVICE_URL = 'http://127.0.0.1:9001/encrypt'
 ENCRYPT_ROUTE='/encrypt'
 DECRYPTION_SERVICE_URL = 'http://127.0.0.1:9001/decrypt'
@@ -29,6 +21,14 @@ SORTED_COMMON_PWORDS = "/Users/ryanmaki/Documents/UO/CS361/CS-361-Project/passwo
 PROBABILITY_LETTERS_AND_NUMS = 0.85
 PROBABILITY_SPECIAL_CHARACTERS = 0.15
 CHARACTER_PROBAILITIES = [PROBABILITY_LETTERS_AND_NUMS, PROBABILITY_SPECIAL_CHARACTERS]
+
+# ----------- For Help Video -----------
+CHECKER_VIDEO_PATH = "/Users/ryanmaki/Documents/UO/CS361/CS-361-Project/VideoAndAudio/checker.mp4"
+CHECKER_AUDIO_PATH = "/Users/ryanmaki/Documents/UO/CS361/CS-361-Project/VideoAndAudio/checkerAudio.m4a"
+RECOMMENDATION_VIDEO_PATH = "/Users/ryanmaki/Documents/UO/CS361/CS-361-Project/VideoAndAudio/recommendation.mp4"
+RECOMMENDATION_AUDIO_PATH = "/Users/ryanmaki/Documents/UO/CS361/CS-361-Project/VideoAndAudio/recommendationAudio.m4a"
+VIDEO_HEIGHT = 480
+VIDEO_WIDTH = 720
 
 # ----------- Messages for UI.py -----------
 starting_message = """
