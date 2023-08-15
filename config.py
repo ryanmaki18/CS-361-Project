@@ -1,4 +1,4 @@
-######## ----------- Config File for Password Service Project ----------- ########
+######## ----------- Config File Password Service Project ----------- ########
 ## Made for CS 361 by Ryan Maki
 
 

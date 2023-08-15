@@ -1,3 +1,4 @@
+## Made this sort the common/compromised json password files
 import json
 
 INPUT = "/Users/ryanmaki/Documents/UO/CS361/CS-361-PROJECT/password-srv-files/100000-common-passwords.json"
