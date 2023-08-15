@@ -34,7 +34,7 @@ VIDEO_WIDTH = 720
 # ----------- Messages for UI.py -----------
 starting_message = """
 Please enter the number or name of the service you'd like to use: 
-    (Fully Encrypted!)
+    (Passwords Fully Encrypted!)
 1 - compromised-password-check
 2 - common-password-check
 3 - combined-check
