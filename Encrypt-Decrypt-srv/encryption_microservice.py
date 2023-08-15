@@ -1,4 +1,3 @@
-import config
 from flask import Flask, request
 app = Flask(__name__)
 
@@ -30,7 +29,7 @@ class Cipher:
 cipher = Cipher()
 
 
-@app.route(config.ENCRYPT_ROUTE, methods=['POST'])
+@app.route('/encrypt', methods=['POST'])
 def encrypt_route():
     data = request.get_json()
     password = data['password']
@@ -39,7 +38,7 @@ def encrypt_route():
     return {'encrypted_password': encrypted_password}
 
 
-@app.route(config.DECRYPT_ROUTE, methods=['POST'])
+@app.route('/decrypt', methods=['POST'])
 def decrypt_route():
     data = request.get_json()
     encrypted_password = data['encrypted_password']
@@ -49,4 +48,4 @@ def decrypt_route():
 
 
 if __name__ == '__main__':
-    app.run(host=config.HOST, port=config.ENCRYPT_DECRYPT_PORT)
+    app.run(host='127.0.0.1', port=9001)
