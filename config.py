@@ -1,6 +1,7 @@
 ######## ----------- Config File for Password Service Project ----------- ########
 ## Made for CS 361 by Ryan Maki
 
+
 # ----------- HTTP Communication Information -----------
 ENCRYPTION_SERVICE_URL = 'http://127.0.0.1:9001/encrypt'
 ENCRYPT_ROUTE='/encrypt'

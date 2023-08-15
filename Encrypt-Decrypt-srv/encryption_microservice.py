@@ -1,3 +1,11 @@
+import sys
+import os
+
+# Add the parent directory to the Python path
+parent_dir = os.path.dirname(os.path.abspath(__file__))
+sys.path.append(os.path.dirname(parent_dir))
+
+import config
 from flask import Flask, request
 app = Flask(__name__)
 
@@ -29,7 +37,7 @@ class Cipher:
 cipher = Cipher()
 
 
-@app.route('/encrypt', methods=['POST'])
+@app.route(config.ENCRYPT_ROUTE, methods=['POST'])
 def encrypt_route():
     data = request.get_json()
     password = data['password']
@@ -38,7 +46,7 @@ def encrypt_route():
     return {'encrypted_password': encrypted_password}
 
 
-@app.route('/decrypt', methods=['POST'])
+@app.route(config.DECRYPT_ROUTE, methods=['POST'])
 def decrypt_route():
     data = request.get_json()
     encrypted_password = data['encrypted_password']
@@ -48,4 +56,4 @@ def decrypt_route():
 
 
 if __name__ == '__main__':
-    app.run(host='127.0.0.1', port=9001)
+    app.run(host=config.HOST, port=config.ENCRYPT_DECRYPT_PORT)
