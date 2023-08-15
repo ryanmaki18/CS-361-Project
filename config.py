@@ -50,6 +50,7 @@ Leave Blank to Exit.
 """
 
 help_video_input = """Please select which video you would like to watch:
+    (Will force you to kill the program with ^C when done)
 1 - password checker explaination video
 2 - password recommendation explaination video
 Leave Blank to Exit.
