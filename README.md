@@ -21,4 +21,8 @@ The combined check obviously checks for them both.
 The complexity check simply checks of it has upper/lower case letters, a number, and special character.
 Lastly, the password recommendation takes in a password length you would like, and returns a random password of that length. 
 
+Here is the Project Overview from Canvas:
+![image](https://github.com/ryanmaki18/CS-361-Project/assets/130192949/0ffaca7f-ddfa-4cdc-affe-548a943fddb4)
+![image](https://github.com/ryanmaki18/CS-361-Project/assets/130192949/cef93642-7a4a-4851-b841-5eaa79f29472)
+
 Enjoy!
